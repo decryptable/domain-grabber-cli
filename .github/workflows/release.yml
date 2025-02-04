@@ -5,31 +5,56 @@ on:
     types: [created]
 
 jobs:
-  release:
-    name: Release ${{ matrix.target }}
-    runs-on: ubuntu-latest
+  build:
+    name: Build for ${{ matrix.target }}
     strategy:
-      fail-fast: false
       matrix:
         include:
-          - target: x86_64-pc-windows-gnu
-            archive: zip
-          - target: x86_64-unknown-linux-musl
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
             archive: tar.gz
-          - target: x86_64-apple-darwin
+
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            archive: tar.gz
+
+          - os: macos-latest
+            target: x86_64-apple-darwin
             archive: zip
-          - target: aarch64-apple-darwin
+
+          - os: macos-latest
+            target: aarch64-apple-darwin
             archive: zip
+
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: zip
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: 🛎 Checkout repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
-      - name: 🚀 Compile and Release
-        uses: rust-build/rust-build.action@v1.4.5
+      - name: 🛠 Install Rust toolchain
+        run: rustup target add ${{ matrix.target }}
+
+      - name: 🚀 Build binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: 📦 Package binary
+        run: |
+          mkdir -p dist
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            zip -j dist/domain-grabber-${{ matrix.target }}.zip target/${{ matrix.target }}/release/domain-grabber-cli.exe
+          else
+            tar -czvf dist/domain-grabber-${{ matrix.target }}.tar.gz -C target/${{ matrix.target }}/release domain-grabber-cli
+          fi
+        shell: bash
+
+      - name: 🚢 Upload to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
-          EXTRA_FILES: "README.md LICENSE"
