@@ -1,6 +1,5 @@
 [package]
 name = "domain-grabber-cli"
-version = "0.1.0"
 edition = "2021"
 authors = ["decryptable <decryptable1337@gmail.com>"]
 description = "A CLI tool to grab domains"
@@ -35,7 +34,10 @@ chalk_rs = "1.0.1"
 clap = { version = "4.5.28", features = ["derive"] }
 figlet-rs = "0.1.5"
 tokio = { version = "1.43.0", features = ["full"] }
-reqwest = { version = "0.12.12", default_features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12.12", default_features = false, features = [
+    "json",
+    "rustls-tls",
+] }
 spinners = "4.1.1"
 inquire = { version = "0.7.5", features = ["date"] }
 chrono = "0.4.39"

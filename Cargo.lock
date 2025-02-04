@@ -311,7 +311,7 @@ dependencies = [
 
 [[package]]
 name = "domain-grabber-cli"
-version = "0.1.0"
+version = "0.0.0"
 dependencies = [
  "chalk_rs",
  "chrono",

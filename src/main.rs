@@ -6,7 +6,7 @@ use chrono::{Utc, Weekday};
 use clap::{Arg, Command};
 use debugoff::multi_ptraceme_or_die;
 use inquire::{DateSelect, Text};
-use obfstr::obfstr;
+use obfstr::{obfstr, obfstring};
 use std::fs::write;
 use std::path::PathBuf;
 use tokio::time::{sleep, Duration};
@@ -18,9 +18,10 @@ async fn main() {
 
     ui::print_banner();
 
-    let matches = Command::new("domain-grabber-cli")
-        .version("0.1.0")
+    let matches = Command::new(file!())
+        .bin_name(file!())
         .author("decryptable")
+        .about(obfstring!("Grab all registered domains easily!"))
         .arg(
             Arg::new("date")
                 .short('d')
