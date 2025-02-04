@@ -18,7 +18,7 @@ async fn main() {
 
     ui::print_banner();
 
-    let matches = Command::new("domain-grabber")
+    let matches = Command::new("domain-grabber-cli")
         .version("0.1.0")
         .author("decryptable")
         .arg(

@@ -6,17 +6,14 @@ on:
       - "v*"
 
 jobs:
-  build:
+  build-linux-windows:
     name: Build on ${{ matrix.target }}
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         target:
           - x86_64-unknown-linux-gnu
           - x86_64-pc-windows-gnu
-          - x86_64-apple-darwin
-          - aarch64-apple-darwin
 
     steps:
       - name: 🛎 Checkout repository
@@ -43,9 +40,36 @@ jobs:
           name: domain-grabber-cli-${{ matrix.target }}
           path: artifacts/*
 
+  build-macos:
+    name: Build macOS Binaries
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-apple-darwin
+          - aarch64-apple-darwin
+
+    steps:
+      - name: 🛎 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 📦 Build macOS Binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: 📂 Rename binary
+        run: |
+          mkdir artifacts
+          mv target/${{ matrix.target }}/release/domain-grabber-cli artifacts/domain-grabber-cli-${{ matrix.target }}
+
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: domain-grabber-cli-${{ matrix.target }}
+          path: artifacts/*
+
   release:
     name: 🚀 Create GitHub Release
-    needs: build
+    needs: [build-linux-windows, build-macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
