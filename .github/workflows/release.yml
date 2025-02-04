@@ -40,7 +40,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
-          sudo apt install -y pkg-config libssl-dev
+          sudo apt install -y pkg-config libssl-dev musl-tools
           export OPENSSL_STATIC=1
           export OPENSSL_DIR="/usr"
 
