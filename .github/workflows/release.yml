@@ -36,6 +36,15 @@ jobs:
       - name: 🛎 Checkout repository
         uses: actions/checkout@v4
 
+      - name: 🛠 Install dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install -y pkg-config libssl-dev
+          export OPENSSL_STATIC=1
+          export OPENSSL_DIR="/usr"
+
+
       - name: 🛠 Install Rust toolchain
         run: rustup target add ${{ matrix.target }}
 
