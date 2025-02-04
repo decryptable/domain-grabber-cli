@@ -99,7 +99,7 @@ async fn main() {
             let domains: Vec<&str> = data.lines().collect();
             let total_domains = domains.len();
             sp.stop_with_message(chalk.green().bold().string(&format!(
-                "\n✅ Successfully retrieved {} domains!",
+                "✅ Successfully retrieved {} domains!",
                 total_domains
             )));
 
@@ -117,7 +117,7 @@ async fn main() {
                 .println(&format!("💾 Domains saved to: {}", output_path.display()));
         }
         Err(e) => {
-            sp.stop_with_message(chalk.red().bold().string(&format!("\n❌ Error: {}", e)));
+            sp.stop_with_message(chalk.red().bold().string(&format!("❌ Error: {}", e)));
         }
     }
 }
