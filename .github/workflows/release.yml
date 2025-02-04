@@ -40,13 +40,18 @@ jobs:
       - name: 🛎 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🛠 Install dependencies
+      - name: 🛠 Install dependencies (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt update
           sudo apt install -y pkg-config libssl-dev musl-tools
           export OPENSSL_STATIC=1
           export OPENSSL_DIR="/usr"
+
+      - name: 🛠 Install zip (Windows)
+        if: runner.os == 'Windows'
+        run: choco install zip -y
+        
 
 
       - name: 🛠 Install Rust toolchain
