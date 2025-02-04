@@ -2,6 +2,19 @@
 
 **Domain Grabber CLI** is a simple command-line tool to fetch all registered domains for a specific date. Built with Rust for speed and efficiency.
 
+
+## ✨ Demo
+
+<details open>
+<summary>Interactive Mode</summary>
+<img src="./demo/interactive-mode.svg"/>
+</details>
+
+<details open>
+<summary>Non-Interactive Mode</summary>
+<img src="./demo/non-interactive-mode.svg"/>
+</details>
+
 ## 🚀 Features
 
 - Retrieve lists of registered domains from a specified date
